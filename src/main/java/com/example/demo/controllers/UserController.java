@@ -1,16 +1,30 @@
 package com.example.demo.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.demo.models.Users;
+import com.example.demo.services.UserService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/api/users")
 public class UserController {
+    private final UserService userService;
 
-    @GetMapping
-    public String sayHello() {
-        return "hello world!";
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping
+    public Users createUser(@RequestBody Users user) {
+        return userService.createUser(user);
+    }
+
+    @GetMapping("/{id}")
+    public Users getUser(@PathVariable Long id) {
+        return userService.getUser(id);
+    }
+
+    @PutMapping
+    public Users updateUser(@RequestBody Users user) {
+        return userService.updateUser(user);
     }
 }

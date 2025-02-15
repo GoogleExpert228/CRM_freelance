@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -24,6 +25,7 @@ public class Clients {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)  // Привязка к фрилансеру
+    @JsonBackReference
     private Users user;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -31,4 +33,12 @@ public class Clients {
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notes> notes;  // Связь с заметками
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUser(Users user) {
+        this.user = user;
+    }
 }

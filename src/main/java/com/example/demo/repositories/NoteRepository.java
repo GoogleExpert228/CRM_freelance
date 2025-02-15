@@ -3,4 +3,8 @@ package com.example.demo.repositories;
 import com.example.demo.models.Notes;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface NoteRepository extends JpaRepository<Notes, Long> { }
+import java.util.List;
+
+public interface NoteRepository extends JpaRepository<Notes, Long> {
+    List<Notes> findByClientId(Long clientId);
+}
