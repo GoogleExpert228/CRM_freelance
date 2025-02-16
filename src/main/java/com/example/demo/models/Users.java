@@ -24,4 +24,16 @@ public class Users {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Clients> clients;
+
+    public void setPassword(String encode) {
+        this.passwordHash = encode;
+    }
+
+    public String getPassword() {
+        return this.passwordHash;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
 }
