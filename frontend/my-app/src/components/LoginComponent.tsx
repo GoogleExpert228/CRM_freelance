@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { getUserIdByUsername } from "../AdditionalFunc";  // если функция асинхронная
 
 function LoginComponent() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState<String>("");
+    const [error, setError] = useState<string>("");  // Тип string для ошибок
     const navigate = useNavigate();
 
     const handleLogin = async () => {
@@ -20,13 +21,24 @@ function LoginComponent() {
             );
     
             if (response.status === 200) {
-                // Сохраняем имя пользователя в localStorage
+                console.log("Login successful for:", username);
+    
+                // Очищаем старый userId перед новым логином
+                localStorage.removeItem("userId");
                 localStorage.setItem("username", username);
-                setUsername(username);  // Обновляем состояние
-                navigate("/dashboard"); // Перенаправляем на страницу личного кабинета
+    
+                const userId = await getUserIdByUsername(); // Запрашиваем свежий userId
+                console.log("User ID after login:", userId);
+    
+                if (userId) {
+                    localStorage.setItem("userId", userId.toString());
+                }
+    
+                navigate("/dashboard/clients");
             }
-        } catch (err) {
-            
+        } catch (err: any) {
+            console.error("Login error:", err);
+            setError("Login failed. Please check your credentials.");
         }
     };
 
@@ -54,7 +66,7 @@ function LoginComponent() {
                 {/* Кнопка логина */}
                 <button
                     onClick={handleLogin}
-                    className="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                    className="w-full p-3 text-white rounded-lg bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
                 >
                     Log-in
                 </button>

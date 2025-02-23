@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function NavbarComponent() {
     // Указываем тип состояния как string | null
     const [username, setUsername] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const user = localStorage.getItem("username");
@@ -15,6 +16,7 @@ function NavbarComponent() {
     const handleLogout = () => {
         localStorage.removeItem("username");
         setUsername(null);
+        navigate("/")
     };
 
     return (
@@ -59,9 +61,12 @@ function NavbarComponent() {
                                 Войти
                             </button>
                         </Link>
-                        <button className="bg-gray-700 hover:bg-gray-800 text-white py-2 px-4 rounded-lg transition">
-                            Зарегистрироваться
-                        </button>
+
+                        <Link to="/register">
+                            <button className="bg-gray-700 hover:bg-gray-800 text-white py-2 px-4 rounded-lg transition">
+                                Зарегистрироваться
+                            </button>
+                        </Link>
                     </>
                 )}
             </div>

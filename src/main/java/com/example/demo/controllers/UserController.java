@@ -19,26 +19,32 @@ public class UserController {
         return userService.createUser(user);
     }
 
+    // Получение пользователя по id
     @GetMapping("/{id}")
     public Users getUser(@PathVariable Long id) {
         return userService.getUser(id);
     }
 
+    // Обновление пользователя
     @PutMapping
     public Users updateUser(@RequestBody Users user) {
         return userService.updateUser(user);
     }
 
+    // Логин
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
         boolean isAuthenticated = userService.login(username, password);
         if (isAuthenticated) {
-            // Если успешный вход — вернуть успешный ответ (например, сообщение)
             return ResponseEntity.ok("Login successful!");
         } else {
-            // Если неверный логин или пароль — вернуть ошибку
             return ResponseEntity.status(401).body("Invalid credentials!");
         }
     }
 
+    // Получение id пользователя по имени
+    @GetMapping("/username/{username}")
+    public Long getIdByUsername(@PathVariable String username) {
+        return userService.getIdByUsername(username);
+    }
 }
